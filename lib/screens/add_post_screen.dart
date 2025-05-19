@@ -278,7 +278,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       });
 
       if (!mounted) return;
-      
+
       sendNotificationToTopic(_descriptionController.text, fullName); 
 
       Navigator.pushReplacement(
@@ -338,7 +338,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
     Future<void> sendNotificationToTopic(String body, String senderName) async {
-    final url = Uri.parse('https://fasum-cloud-alpha.vercel.app/send-to-topic');
+    final url = Uri.parse('https://fasum-cloud-bg12lmyqt-rifki-fahriansyahs-projects.vercel.app/send-to-topic');
     final response = await http.post(
       url,
       headers: {
