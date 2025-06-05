@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fasum/l10n/app_localizations.dart';
+import 'package:fasum/l10n/app_localizations_en.dart';
 import 'package:fasum/screens/home_screen.dart';
 import 'package:fasum/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,7 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override 
   Widget build(BuildContext context) { 
     return Scaffold( 
-      appBar: AppBar(title: const Text('Sign Up')), 
+      appBar: AppBar(title: Text(AppLocalizations.of(context)?.signUp ?? 'Sign Up')), 
       body: Center( 
         child: Padding( 
           padding: const EdgeInsets.all(16.0), 
@@ -39,14 +42,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   TextFormField( 
                     controller: _fullNameController, 
                     textCapitalization: TextCapitalization.words, 
-                    decoration: const InputDecoration( 
-                      labelText: 'Full Name', 
-                      border: OutlineInputBorder(), 
-                      prefixIcon: Icon(Icons.person), 
+                    decoration: InputDecoration( 
+                      labelText: AppLocalizations.of(context)?.fullName ?? 'Full Name', 
+                      border: const OutlineInputBorder(), 
+                      prefixIcon: const Icon(Icons.person), 
                     ), 
-                    validator: (value) { 
+                      validator: (value) { 
                       if (value == null || value.trim().isEmpty) { 
-                        return 'Please enter your full name'; 
+                        return AppLocalizations.of(context)?.pleaseEnterFullName ?? 'Please enter your full name'; 
                       } 
                       return null; 
                     }, 

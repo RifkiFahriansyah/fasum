@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fasum/l10n/app_localizations.dart';
 import 'package:fasum/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to pick image: $e')));
+        ).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)?.failedToCompressImage(e.toString) ?? 'Failed to compress image: $e')));
       }
     }
   }

@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:fasum/firebase_options.dart';
+import 'package:fasum/helper/locale_provider.dart';
 import 'package:fasum/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:fasum/l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -125,7 +130,10 @@ void main() async {
   );
   await flutterLocalNotificationsPlugin.initialize(settings);
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (contect) => LocaleProvider(),
+    child: const MyApp(),
+    ));
 }
 
 class MyApp extends StatefulWidget {
@@ -165,11 +173,24 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  @override
+    @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LocaleProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Fasum',
+      locale: provider.locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('id', 'ID'), // Bahasa Indonesia
+        Locale('en', 'US'), // English
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:fasum/l10n/app_localizations.dart';
 import 'package:fasum/screens/full_image_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({
@@ -52,7 +54,7 @@ class _DetailScreenState extends State<DetailScreen> {
     ).format(widget.createdAt);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Laporan')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)?.reportDetail ?? 'Detail Laporan')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

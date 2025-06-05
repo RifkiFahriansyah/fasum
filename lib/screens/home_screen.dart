@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fasum/l10n/app_localizations.dart';
 import 'package:fasum/screens/add_post_screen.dart';
 import 'package:fasum/screens/detail_screen.dart';
 import 'package:fasum/screens/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fasum/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,37 +22,43 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedCategory;
 
-  List<String> categories = [
-    'Jalan Rusak',
-    'Marka Pudar',
-    'Lampu Mati',
-    'Trotoar Rusak',
-    'Rambu Rusak',
-    'Jembatan Rusak',
-    'Sampah Menumpuk',
-    'Saluran Tersumbat',
-    'Sungai Tercemar',
-    'Sampah Sungai',
-    'Pohon Tumbang',
-    'Taman Rusak',
-    'Fasilitas Rusak',
-    'Pipa Bocor',
-    'Vandalisme',
-    'Banjir',
-    'Lainnya',
-  ];
+  List<String> get categories {
+    final Localizations = AppLocalizations.of(context);
+    return [
+      Localizations?.categoryJalanRusak ?? '',
+      Localizations?.categoryMarkaPudar ?? '',
+      Localizations?.categoryLampuMati ?? '',
+      Localizations?.categoryTrotoarRusak ?? '',
+      Localizations?.categoryRambuRusak ?? '',
+      Localizations?.categoryJembatanRusak ?? '',
+      Localizations?.categorySampahMenumpuk ?? '',
+      Localizations?.categorySaluranTersumbat ?? '',
+      Localizations?.categorySungaiTercemar ?? '',
+      Localizations?.categorySampahSungai ?? '',
+      Localizations?.categoryPohonTumbang ?? '',
+      Localizations?.categoryTamanRusak ?? '',
+      Localizations?.categoryFasilitasRusak ?? '',
+      Localizations?.categoryPipaBocor ?? '',
+      Localizations?.categoryVandalisme ?? '',
+      Localizations?.categoryBanjir ?? '',
+      Localizations?.categoryLainnya ?? '',
+    ];
+  }
 
   String formatTime(DateTime dateTime) {
     final now = DateTime.now();
     final diff = now.difference(dateTime);
     if (diff.inSeconds < 60) {
-      return '${diff.inSeconds} secs ago';
+      return AppLocalizations.of(context)?.secondsAgo(diff.inSeconds) ??
+          '${diff.inSeconds} seconds ago';
     } else if (diff.inMinutes < 60) {
-      return '${diff.inMinutes} mins ago';
+      return AppLocalizations.of(context)?.secondsAgo(diff.inMinutes) ??
+          '${diff.inMinutes} mins ago';
     } else if (diff.inHours < 24) {
-      return '${diff.inHours} hrs ago';
+      return AppLocalizations.of(context)?.secondsAgo(diff.inHours) ??
+          '${diff.inHours} hours ago';
     } else if (diff.inHours < 48) {
-      return '1 day ago';
+      return AppLocalizations.of(context)?.oneDayAgo ?? '1 day ago';
     } else {
       return DateFormat('dd/MM/yyyy').format(dateTime);
     }
@@ -79,7 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 ListTile(
                   leading: const Icon(Icons.clear),
-                  title: const Text('Semua Kategori'),
+                  title: Text(
+                    AppLocalizations.of(context)?.allCategories ?? 'Semua Kategori',
+                  ),
                   onTap:
                       () => Navigator.pop(
                         context,
@@ -141,13 +154,26 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: _showCategoryFilter,
             icon: const Icon(Icons.filter_list),
-            tooltip: 'Filter Kategori',
+            tooltip:
+                AppLocalizations.of(context)?.filterCategory ??
+                'Filter Kategori',
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+            icon: const Icon(Icons.settings),
+            tooltip: AppLocalizations.of(context)?.settings ?? 'Pengaturan',
           ),
           IconButton(
             onPressed: () {
               signOut();
             },
             icon: const Icon(Icons.logout),
+            tooltip: AppLocalizations.of(context)?.signOut ?? 'Keluar',
           ),
         ],
       ),
@@ -288,9 +314,9 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (context) => const AddPostScreen()));
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const AddPostScreen()),
+          );
         },
         child: const Icon(Icons.add),
       ),
